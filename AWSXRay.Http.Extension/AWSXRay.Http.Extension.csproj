@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Will Axtell</Authors>
+    <Description>Enable AWS XRay tracing for SQL client commands</Description>
+    <PackageReleaseNotes>1.0.2- Cleaned up parameter loop
+1.0.0- Initial release</PackageReleaseNotes>
+    <Version>1.0.2</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ConfigurationSection.Inheritance.Extension" Version="1.0.1" />
+    <PackageReference Include="Host.ActivateService.Extension" Version="1.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Extensions.DiagnosticAdapter" Version="3.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="AWSXRayRecorder.Handlers.AspNetCore" Version="2.6.2" />
+  </ItemGroup>
+
+</Project>

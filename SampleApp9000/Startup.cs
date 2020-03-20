@@ -1,3 +1,4 @@
+using AWSXRay.Http.Extension.Extensions;
 using AWSXRay.SqlClient.Extension;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,7 @@ namespace SampleApp9000
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseXRay("SampleApp9000", Configuration);
+            app.ActivateXRayHttpDiagnosticsLogging();
 
             if (env.IsDevelopment())
             {

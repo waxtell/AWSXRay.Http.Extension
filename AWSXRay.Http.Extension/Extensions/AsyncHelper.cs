@@ -11,10 +11,10 @@ namespace AWSXRay.Http.Extension.Extensions
                 TaskCreationOptions.None,
                 TaskContinuationOptions.None,
                 TaskScheduler.Default);
+
         public static void RunSync(Func<Task> func)
         {
-            AsyncHelper
-                .TaskFactory
+            TaskFactory
                 .StartNew(func)
                 .Unwrap()
                 .GetAwaiter()
@@ -23,8 +23,7 @@ namespace AWSXRay.Http.Extension.Extensions
         public static TResult RunSync<TResult>(Func<Task<TResult>> func)
         {
             return
-                AsyncHelper
-                    .TaskFactory
+                TaskFactory
                     .StartNew(func)
                     .Unwrap()
                     .GetAwaiter()

@@ -3,10 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Will Axtell</Authors>
-    <Description>Enable AWS XRay tracing for SQL client commands</Description>
-    <PackageReleaseNotes>1.0.2- Cleaned up parameter loop
-1.0.0- Initial release</PackageReleaseNotes>
-    <Version>1.0.2</Version>
+    <Description>Enable AWS XRay tracing for external HTTP dependencies</Description>
+    <PackageReleaseNotes>1.0.0- Initial release</PackageReleaseNotes>
+    <Version>1.0.0</Version>
+    <RepositoryUrl>https://github.com/waxtell/AWSXRay.Http.Extension.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>AWS XRay HTTP</PackageTags>
+    <PackageProjectUrl>https://github.com/waxtell/AWSXRay.Http.Extension</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

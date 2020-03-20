@@ -34,8 +34,7 @@ namespace SampleApp9000.Controllers
                 msg.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 var response = await httpClient.SendAsync(msg);
 
-                var content = await response.Content.ReadAsStringAsync();
-                //var response = await httpClient.GetAsync("api/breeds/image/random");
+                //var content = await response.Content.ReadAsStringAsync();
             }
 
             return new List<Region>();

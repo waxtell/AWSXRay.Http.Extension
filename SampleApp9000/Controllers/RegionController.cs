@@ -34,6 +34,8 @@ namespace SampleApp9000.Controllers
                 var msg = new HttpRequestMessage(HttpMethod.Get, "api/breeds/image/random");
 
                 var response = await httpClient.SendAsync(msg);
+
+                var content = await response.Content.ReadAsStringAsync();
                 //var response = await httpClient.GetAsync("api/breeds/image/random");
             }
 

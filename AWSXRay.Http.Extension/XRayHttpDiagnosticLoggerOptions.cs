@@ -12,19 +12,11 @@ namespace AWSXRay.Http.Extension
 
         internal bool ShouldCaptureDetails(string comparator, out Include include)
         {
-            var exclude = CaptureHosts
-                            ?.OfType<Exclude>()
-                            .Any(x => x.IsMatch(comparator));
+            var lastMatch = CaptureHosts.LastOrDefault(x => x.IsMatch(comparator));
 
-            include = CaptureHosts
-                            ?.OfType<Include>()
-                            .First(x => x.IsMatch(comparator));
+            include = lastMatch as Include;
 
-            return 
-            (
-                include != null && 
-                (!exclude.HasValue || !exclude.Value)
-            );
+            return lastMatch is Include;
         }
     }
 }

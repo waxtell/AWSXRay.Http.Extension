@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Threading;
+using AWSXRay.Http.Extension.Extensions;
 using System.Threading.Tasks;
 using Amazon.XRay.Recorder.Core;
 using AWSXRay.SqlClient.Extension;
@@ -10,34 +9,6 @@ using Microsoft.Extensions.DiagnosticAdapter;
 
 namespace AWSXRay.Http.Extension
 {
-    internal static class AsyncHelper
-    {
-        private static readonly TaskFactory TaskFactory = new
-            TaskFactory(CancellationToken.None,
-                TaskCreationOptions.None,
-                TaskContinuationOptions.None,
-                TaskScheduler.Default);
-        public static void RunSync(Func<Task> func)
-        {
-            AsyncHelper
-                .TaskFactory
-                .StartNew(func)
-                .Unwrap()
-                .GetAwaiter()
-                .GetResult();
-        }
-        public static TResult RunSync<TResult>(Func<Task<TResult>> func)
-        {
-            return
-                AsyncHelper
-                    .TaskFactory
-                    .StartNew(func)
-                    .Unwrap()
-                    .GetAwaiter()
-                    .GetResult();
-        }
-    }
-
     public class XRayHttpDiagnosticLogger : IObserver<DiagnosticListener>
     {
         private readonly List<IDisposable> _subscriptions;
@@ -124,25 +95,24 @@ namespace AWSXRay.Http.Extension
 
                             if (_options.ShouldCaptureDetails(request.RequestUri.Host, out var include))
                             {
-                                if (include.IncludeRequestBody)
+                                if (include.IncludeRequestBody && request.Content != null)
                                 {
-                                    var stream = AsyncHelper.RunSync(() => request.Content.ReadAsStreamAsync());
-                                    stream.Seek(0, SeekOrigin.Begin);
-                                    var reader = new StreamReader(stream);
-                                    var content = reader.ReadToEnd();
-
                                     recorder
                                         .AddMetadata
                                         (
                                             "request",
                                             new
                                             {
-                                                body = content
+                                                body = request.Content.ToObject()
                                             }
                                         );
                                 }
+
+                                if (include.Traced.HasValue)
+                                {
+                                    recorder.AddHttpInformation("traced", include.Traced.Value);
+                                }
                             }
-                            //recorder.AddHttpInformation("traced", false);
                         }
                     }
                 );
@@ -164,26 +134,22 @@ namespace AWSXRay.Http.Extension
                                     "response",
                                     new
                                     {
-                                        status = (int) response.StatusCode
+                                        status = (int)response.StatusCode,
+                                        content_length = response.Content.Headers.ContentLength ?? 0
                                     }
                                 );
 
                             if (_options.ShouldCaptureDetails(response.RequestMessage.RequestUri.Host, out var include))
                             {
-                                if (include.IncludeRequestBody)
+                                if (include.IncludeResponseBody && response.Content != null)
                                 {
-                                    var stream = AsyncHelper.RunSync(() => response.Content.ReadAsStreamAsync());
-                                    stream.Seek(0, SeekOrigin.Begin);
-                                    var reader = new StreamReader(stream);
-                                    var content = reader.ReadToEnd();
-
                                     recorder
                                         .AddMetadata
                                         (
                                             "response",
                                             new
                                             {
-                                                body = content
+                                                body = response.Content.ToObject()
                                             }
                                         );
                                 }

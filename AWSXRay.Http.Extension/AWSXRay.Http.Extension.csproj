@@ -14,8 +14,6 @@
     <PackageReference Include="Host.ActivateService.Extension" Version="1.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.DiagnosticAdapter" Version="3.1.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
     <PackageReference Include="AWSXRayRecorder.Handlers.AspNetCore" Version="2.6.2" />
   </ItemGroup>
 

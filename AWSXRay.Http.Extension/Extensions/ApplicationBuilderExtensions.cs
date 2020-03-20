@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AWSXRay.Http.Extension.Extensions
+// ReSharper disable once CheckNamespace
+namespace AWSXRay.Http.Extension
 {
     public static class ApplicationBuilderExtensions
     {

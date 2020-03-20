@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AWSXRay.Http.Extension.Extensions;
 using System.Threading.Tasks;
 using Amazon.XRay.Recorder.Core;
 using AWSXRay.SqlClient.Extension;
@@ -45,26 +44,43 @@ namespace AWSXRay.Http.Extension
             }
         }
 
+        [DiagnosticName("System.Net.Http.Exception")]
+        public void OnHttpRequestOutException(Exception exception, System.Net.Http.HttpRequestMessage request)
+        {
+            AWSXRayRecorder
+                .Instance
+                .With
+                (
+                    recorder =>
+                    {
+                        if (recorder.IsEntityPresent() && exception != null && _options.ShouldCaptureHost(request.RequestUri.Host, out var include))
+                        {
+                            recorder.AddException(exception);
+                        }
+                    }
+                );
+        }
+
         [DiagnosticName("System.Net.Http.HttpRequestOut.Start")]
-        public virtual void OnHttpRequestOutStart(System.Net.Http.HttpRequestMessage request)
+        public void OnHttpRequestOutStart(System.Net.Http.HttpRequestMessage request)
         {
             LogRequest(request);
         }
 
         [DiagnosticName("System.Net.Http.HttpRequestOut.Stop")]
-        public virtual void OnHttpRequestOutStop(System.Net.Http.HttpRequestMessage request, System.Net.Http.HttpResponseMessage response, TaskStatus requestTaskStatus)
+        public void OnHttpRequestOutStop(System.Net.Http.HttpRequestMessage request, System.Net.Http.HttpResponseMessage response, TaskStatus requestTaskStatus)
         {
             LogResponse(response);
         }
 
         [DiagnosticName("System.Net.Http.Request")]
-        public virtual void OnRequest(System.Net.Http.HttpRequestMessage request)
+        public void OnRequest(System.Net.Http.HttpRequestMessage request)
         {
             LogRequest(request);
         }
 
         [DiagnosticName("System.Net.Http.Response")]
-        public virtual void OnResponse(System.Net.Http.HttpResponseMessage response)
+        public void OnResponse(System.Net.Http.HttpResponseMessage response)
         {
             LogResponse(response);
         }
@@ -155,6 +171,19 @@ namespace AWSXRay.Http.Extension
                                         content_length = response.Content.Headers.ContentLength ?? 0
                                     }
                                 );
+
+                            if (!string.IsNullOrEmpty(response.ReasonPhrase))
+                            {
+                                recorder
+                                    .AddHttpInformation
+                                    (
+                                        "response",
+                                        new
+                                        {
+                                            reason_phrase = response.ReasonPhrase
+                                        }
+                                    );
+                            }
 
                             if (_options.ShouldCaptureHost(response.RequestMessage.RequestUri.Host, out var include))
                             {

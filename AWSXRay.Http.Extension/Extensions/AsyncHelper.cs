@@ -2,7 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AWSXRay.Http.Extension.Extensions
+// ReSharper disable once CheckNamespace
+namespace AWSXRay.SqlClient.Extension
 {
     internal static class AsyncHelper
     {

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -32,7 +31,7 @@ namespace SampleApp9000.Controllers
             {
                 httpClient.BaseAddress = new Uri("https://dog.ceo");
                 var msg = new HttpRequestMessage(HttpMethod.Get, "api/breeds/image/random");
-
+                msg.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 var response = await httpClient.SendAsync(msg);
 
                 var content = await response.Content.ReadAsStringAsync();

@@ -8,15 +8,15 @@ namespace AWSXRay.Http.Extension
 {
     public class XRayHttpDiagnosticLoggerOptions
     {
-        public List<Belonging> CaptureHosts { get; set; } = new List<Belonging>();
+        public List<HostBelonging> CaptureHosts { get; set; } = new List<HostBelonging>();
 
-        internal bool ShouldCaptureDetails(string comparator, out Include include)
+        internal bool ShouldCaptureHost(string comparator, out HostInclude include)
         {
             var lastMatch = CaptureHosts.LastOrDefault(x => x.IsMatch(comparator));
 
-            include = lastMatch as Include;
+            include = lastMatch as HostInclude;
 
-            return lastMatch is Include;
+            return lastMatch is HostInclude;
         }
     }
 }

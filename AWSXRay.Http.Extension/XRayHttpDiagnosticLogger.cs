@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using AWSXRay.Http.Extension.Extensions;
 using System.Threading.Tasks;
 using Amazon.XRay.Recorder.Core;
@@ -93,7 +94,7 @@ namespace AWSXRay.Http.Extension
                                     }
                                 );
 
-                            if (_options.ShouldCaptureDetails(request.RequestUri.Host, out var include))
+                            if (_options.ShouldCaptureHost(request.RequestUri.Host, out var include))
                             {
                                 if (include.IncludeRequestBody && request.Content != null)
                                 {
@@ -105,6 +106,22 @@ namespace AWSXRay.Http.Extension
                                             {
                                                 body = request.Content.ToObject()
                                             }
+                                        );
+                                }
+
+                                var headersToInclude = request
+                                                        .Headers
+                                                        .Where(header => include.ShouldCaptureRequestHeader(header.Key))
+                                                        .ToDictionary(x => x.Key, y => string.Join(",", y.Value));
+
+                                if (headersToInclude.Any())
+                                {
+                                    recorder
+                                        .AddMetadata
+                                        (
+                                            "request",
+                                            "headers",
+                                            headersToInclude
                                         );
                                 }
 
@@ -139,7 +156,7 @@ namespace AWSXRay.Http.Extension
                                     }
                                 );
 
-                            if (_options.ShouldCaptureDetails(response.RequestMessage.RequestUri.Host, out var include))
+                            if (_options.ShouldCaptureHost(response.RequestMessage.RequestUri.Host, out var include))
                             {
                                 if (include.IncludeResponseBody && response.Content != null)
                                 {
@@ -152,6 +169,23 @@ namespace AWSXRay.Http.Extension
                                                 body = response.Content.ToObject()
                                             }
                                         );
+
+                                    var headersToInclude = response
+                                                            .Content
+                                                            .Headers
+                                                            .Where(header => include.ShouldCaptureResponseHeader(header.Key))
+                                                            .ToDictionary(x => x.Key, y => string.Join(",", y.Value));
+
+                                    if (headersToInclude.Any())
+                                    {
+                                        recorder
+                                            .AddMetadata
+                                            (
+                                                "response",
+                                                "headers",
+                                                headersToInclude
+                                            );
+                                    }
                                 }
                             }
                         }

@@ -7,7 +7,15 @@ namespace AWSXRay.SqlClient.Extension
     {
         public static T With<T>(this T obj, Action<T> action)
         {
-            action(obj);
+            try
+            {
+                action(obj);
+            }
+            catch (Exception e)
+            {
+                // Don't allow any exceptions to surface to the user code!
+                Console.WriteLine(e.Message);
+            }
 
             return obj;
         }

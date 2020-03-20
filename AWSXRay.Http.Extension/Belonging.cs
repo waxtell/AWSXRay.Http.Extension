@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using ConfigurationSection.Inheritance.Extension;
 
 namespace AWSXRay.Http.Extension
 {
-    [KnownType(typeof(Include), "include")]
-    [KnownType(typeof(Exclude), "exclude")]
-    [TypeConverter("type")]
     public abstract class Belonging
     {
         public bool IsRegEx { get; set; } = false;

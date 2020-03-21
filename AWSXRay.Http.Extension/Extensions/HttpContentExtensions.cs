@@ -23,6 +23,7 @@ namespace AWSXRay.SqlClient.Extension
                     MediaTypeNames.Text.Plain,
                     MediaTypeNames.Text.Xml,
                     MediaTypeNames.Text.Html,
+                    "text/namevalue",
                     MediaTypeNames.Application.Soap
                 );
         }

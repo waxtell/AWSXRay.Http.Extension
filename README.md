@@ -50,3 +50,40 @@ appsettings.json
     ]
   }
 ```
+
+To include all hosts except google.com (you can exclude as many hosts as you want):
+
+appsettings.json
+```
+  "XRayHttpDiagnosticLoggerOptions": {
+    "CaptureHosts": [
+      {
+        "type": "include",
+        "Expression": ".*",
+        "IsRegEx": true,
+        "IncludeRequestBody": false,
+        "IncludeResponseBody": true,
+        "Traced": false,
+        "CaptureRequestHeaders": [
+          {
+            "type": "include",
+            "Expression": ".*",
+            "IsRegEx": true
+          }
+        ],
+        "CaptureResponseHeaders": [
+          {
+            "type": "include",
+            "Expression": ".*",
+            "IsRegEx": true
+          }
+        ]
+      },
+      {
+        "type": "exclude",
+        "Expression": "google.com",
+        "IsRegEx": false
+      }
+    ]
+  }
+```

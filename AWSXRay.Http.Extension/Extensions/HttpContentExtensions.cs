@@ -24,13 +24,14 @@ namespace AWSXRay.SqlClient.Extension
                     MediaTypeNames.Text.Xml,
                     MediaTypeNames.Text.Html,
                     "text/namevalue",
-                    MediaTypeNames.Application.Soap
+                    MediaTypeNames.Application.Soap,
+                    "application/xml"
                 );
         }
 
         public static object ToObject(this HttpContent content)
         {
-            object contentObject = "Content was received but is not human readable.";
+            object contentObject = "Content not human readable.";
 
             if (content.IsJson())
             {

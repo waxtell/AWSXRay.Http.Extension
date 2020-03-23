@@ -18,10 +18,8 @@ namespace AWSXRay.Http.Extension
         {
             _options = options;
 
-            _subscriptions = new List<IDisposable>
-            {
-                DiagnosticListener.AllListeners.Subscribe(this)
-            };
+            _subscriptions = new List<IDisposable>();
+            _subscriptions.Add(DiagnosticListener.AllListeners.Subscribe(this));
         }
 
         void IObserver<DiagnosticListener>.OnNext(DiagnosticListener diagnosticListener)
@@ -118,10 +116,8 @@ namespace AWSXRay.Http.Extension
                                         .AddMetadata
                                         (
                                             "request",
-                                            new
-                                            {
-                                                body = request.Content.ToObject()
-                                            }
+                                            "body",
+                                            request.Content.ToObject()
                                         );
                                 }
 
@@ -193,10 +189,8 @@ namespace AWSXRay.Http.Extension
                                         .AddMetadata
                                         (
                                             "response",
-                                            new
-                                            {
-                                                body = response.Content.ToObject()
-                                            }
+                                            "body",
+                                            response.Content.ToObject()
                                         );
 
                                     var headersToInclude = response

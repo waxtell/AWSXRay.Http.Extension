@@ -93,23 +93,23 @@ namespace AWSXRay.Http.Extension
                     {
                         if (recorder.IsEntityPresent() && request != null)
                         {
-                            recorder.BeginSubsegment(request.RequestUri.Host);
-                            recorder.SetNamespace("remote");
-
-                            recorder
-                                .AddHttpInformation
-                                (
-                                    "request",
-                                    new
-                                    {
-                                        method = request.Method.ToString(),
-                                        url = request.RequestUri.ToString(),
-                                        user_agent = request.Headers.UserAgent.ToString()
-                                    }
-                                );
-
                             if (_options.ShouldCaptureHost(request.RequestUri.Host, out var include))
                             {
+                                recorder.BeginSubsegment(request.RequestUri.Host);
+                                recorder.SetNamespace("remote");
+
+                                recorder
+                                    .AddHttpInformation
+                                    (
+                                        "request",
+                                        new
+                                        {
+                                            method = request.Method.ToString(),
+                                            url = request.RequestUri.ToString(),
+                                            user_agent = request.Headers.UserAgent.ToString()
+                                        }
+                                    );
+
                                 if (include.IncludeRequestBody && request.Content != null)
                                 {
                                     recorder
@@ -157,18 +157,7 @@ namespace AWSXRay.Http.Extension
                     {
                         if (recorder.IsEntityPresent() && response != null)
                         {
-                            recorder
-                                .AddHttpInformation
-                                (
-                                    "response",
-                                    new
-                                    {
-                                        status = (int)response.StatusCode,
-                                        content_length = response.Content.Headers.ContentLength ?? 0
-                                    }
-                                );
-
-                            if (!string.IsNullOrEmpty(response.ReasonPhrase))
+                            if (_options.ShouldCaptureHost(response.RequestMessage.RequestUri.Host, out var include))
                             {
                                 recorder
                                     .AddHttpInformation
@@ -176,13 +165,24 @@ namespace AWSXRay.Http.Extension
                                         "response",
                                         new
                                         {
-                                            reason_phrase = response.ReasonPhrase
+                                            status = (int)response.StatusCode,
+                                            content_length = response.Content.Headers.ContentLength ?? 0
                                         }
                                     );
-                            }
 
-                            if (_options.ShouldCaptureHost(response.RequestMessage.RequestUri.Host, out var include))
-                            {
+                                if (!string.IsNullOrEmpty(response.ReasonPhrase))
+                                {
+                                    recorder
+                                        .AddHttpInformation
+                                        (
+                                            "response",
+                                            new
+                                            {
+                                                reason_phrase = response.ReasonPhrase
+                                            }
+                                        );
+                                }
+
                                 if (include.IncludeResponseBody && response.Content != null)
                                 {
                                     recorder

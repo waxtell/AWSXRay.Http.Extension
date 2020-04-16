@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.30" />
+    <PackageReference Include="AWSXRayRecorder.Handlers.AspNetCore" Version="2.6.2" />
   </ItemGroup>
 
   <ItemGroup>

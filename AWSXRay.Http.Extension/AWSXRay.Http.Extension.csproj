@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Authors>Will Axtell</Authors>
     <Description>Enable AWS XRay tracing for external HTTP dependencies</Description>
-    <PackageReleaseNotes>1.0.3- Moved all tracing inside of ShouldCaptureHost if block
+    <PackageReleaseNotes>1.0.4- Reduced dependencies
+1.0.3- Moved all tracing inside of ShouldCaptureHost if block
 1.0.2- Clean up body paths
 1.0.1- Update dependencies (reduced min version of Microsoft.Extensions.Configuration)
 1.0.0- Initial release</PackageReleaseNotes>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <RepositoryUrl>https://github.com/waxtell/AWSXRay.Http.Extension.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>AWS XRay HTTP</PackageTags>
@@ -16,10 +17,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSXRayRecorder.Core" Version="2.6.2" />
     <PackageReference Include="ConfigurationSection.Inheritance.Extension" Version="1.0.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.0" />
     <PackageReference Include="Microsoft.Extensions.DiagnosticAdapter" Version="2.1.0" />
-    <PackageReference Include="AWSXRayRecorder.Handlers.AspNetCore" Version="2.6.2" />
   </ItemGroup>
 
 </Project>

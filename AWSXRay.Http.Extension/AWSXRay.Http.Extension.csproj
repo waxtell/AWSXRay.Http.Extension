@@ -4,12 +4,13 @@
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Authors>Will Axtell</Authors>
     <Description>Enable AWS XRay tracing for external HTTP dependencies</Description>
-    <PackageReleaseNotes>1.0.4- Reduced dependencies
+    <PackageReleaseNotes>1.0.5- Moved reason_phrase from http to metadata
+1.0.4- Reduced dependencies
 1.0.3- Moved all tracing inside of ShouldCaptureHost if block
 1.0.2- Clean up body paths
 1.0.1- Update dependencies (reduced min version of Microsoft.Extensions.Configuration)
 1.0.0- Initial release</PackageReleaseNotes>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <RepositoryUrl>https://github.com/waxtell/AWSXRay.Http.Extension.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>AWS XRay HTTP</PackageTags>

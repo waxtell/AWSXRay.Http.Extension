@@ -173,13 +173,11 @@ namespace AWSXRay.Http.Extension
                                 if (!string.IsNullOrEmpty(response.ReasonPhrase))
                                 {
                                     recorder
-                                        .AddHttpInformation
+                                        .AddMetadata
                                         (
                                             "response",
-                                            new
-                                            {
-                                                reason_phrase = response.ReasonPhrase
-                                            }
+                                            "reason_phrase",
+                                            response.ReasonPhrase
                                         );
                                 }
 

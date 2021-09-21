@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 // ReSharper disable once CheckNamespace
@@ -7,20 +6,8 @@ namespace AWSXRay.SqlClient.Extension
 {
     internal static class AsyncHelper
     {
-        private static readonly TaskFactory TaskFactory = new
-            TaskFactory(CancellationToken.None,
-                TaskCreationOptions.None,
-                TaskContinuationOptions.None,
-                TaskScheduler.Default);
+        private static readonly TaskFactory TaskFactory = new TaskFactory();
 
-        public static void RunSync(Func<Task> func)
-        {
-            TaskFactory
-                .StartNew(func)
-                .Unwrap()
-                .GetAwaiter()
-                .GetResult();
-        }
         public static TResult RunSync<TResult>(Func<Task<TResult>> func)
         {
             return

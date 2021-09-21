@@ -51,7 +51,7 @@ namespace AWSXRay.Http.Extension
                 (
                     recorder =>
                     {
-                        if (recorder.IsEntityPresent() && exception != null && _options.ShouldCaptureHost(request.RequestUri.Host, out var include))
+                        if (recorder.IsEntityPresent() && exception != null && _options.ShouldCaptureHost(request.RequestUri.Host, out _))
                         {
                             recorder.AddException(exception);
                         }
@@ -66,7 +66,7 @@ namespace AWSXRay.Http.Extension
         }
 
         [DiagnosticName("System.Net.Http.HttpRequestOut.Stop")]
-        public void OnHttpRequestOutStop(System.Net.Http.HttpRequestMessage request, System.Net.Http.HttpResponseMessage response, TaskStatus requestTaskStatus)
+        public void OnHttpRequestOutStop(System.Net.Http.HttpRequestMessage _, System.Net.Http.HttpResponseMessage response, TaskStatus __)
         {
             LogResponse(response);
         }
@@ -208,10 +208,10 @@ namespace AWSXRay.Http.Extension
                                             );
                                     }
                                 }
+
+                                recorder.EndSubsegment();
                             }
                         }
-
-                        recorder.EndSubsegment();
                     }
                 );
         }

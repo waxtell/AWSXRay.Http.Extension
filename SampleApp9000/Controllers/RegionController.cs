@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace SampleApp9000.Controllers
 {
@@ -12,11 +11,8 @@ namespace SampleApp9000.Controllers
     [Route("[controller]")]
     public class RegionController : ControllerBase
     {
-        private readonly ILogger<RegionController> _logger;
-
-        public RegionController(ILogger<RegionController> logger)
+        public RegionController()
         {
-            _logger = logger;
         }
 
         /// <summary>

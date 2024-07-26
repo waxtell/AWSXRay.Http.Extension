@@ -1,5 +1,5 @@
 using AWSXRay.Http.Extension;
-using AWSXRay.SqlClient.Extension;
+using AWSXRay.Http.Extension.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

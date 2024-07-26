@@ -1,10 +1,8 @@
-﻿using AWSXRay.Http.Extension;
-using ConfigurationSection.Inheritance.Extension;
+﻿using ConfigurationSection.Inheritance.Extension;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable once CheckNamespace
-namespace AWSXRay.SqlClient.Extension
+namespace AWSXRay.Http.Extension.Extensions
 {
     public static class ServiceCollectionExtensions
     {

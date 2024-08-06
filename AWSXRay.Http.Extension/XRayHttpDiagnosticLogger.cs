@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Amazon.XRay.Recorder.Core;
 using AWSXRay.SqlClient.Extension;
@@ -207,6 +208,15 @@ namespace AWSXRay.Http.Extension
                                                 headersToInclude
                                             );
                                     }
+                                }
+
+                                if (response.StatusCode >= HttpStatusCode.InternalServerError)
+                                {
+                                    recorder.MarkFault();
+                                }
+                                else if (response.StatusCode >= HttpStatusCode.BadRequest)
+                                {
+                                    recorder.MarkError();
                                 }
 
                                 recorder.EndSubsegment();
